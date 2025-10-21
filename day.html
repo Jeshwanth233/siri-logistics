@@ -1,0 +1,662 @@
+<!-- index.html
+   Siri Logistics - Single-file website
+   How to use:
+     1. Save this as index.html
+     2. Create an /images/ folder and add:
+        - siri-logo.png  (your uploaded logo)
+        - bus-1.jpg, bus-2.jpg, bus-3.jpg, bus-4.jpg  (your bus photos)
+     3. Open index.html in a browser or serve via a static server.
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Siri Logistics — Luxury on Wheels</title>
+  <meta name="description" content="Siri Logistics — Premium, safe and comfortable bus services. Luxury tours, corporate travel, group trips and event rentals." />
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --------------------------
+       Color tokens (match your logo)
+       -------------------------- */
+    :root{
+      --bg-900: #041122;     /* deep navy */
+      --bg-800: #071428;
+      --teal-1: #07e0c6;    /* bright teal / neon */
+      --teal-2: #00b7ff;    /* cyan accent */
+      --deep-green: #0b7755;/* darker green tone */
+      --gold: #f2b134;      /* gold accent from logo */
+      --muted: #9aa6b1;
+      --glass: rgba(255,255,255,0.04);
+      --card: rgba(255,255,255,0.03);
+      --shadow: 0 8px 30px rgba(2,8,20,0.65);
+      --radius: 14px;
+      --max-width: 1200px;
+    }
+
+    /* Reset + base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(4,20,34,0.6), transparent 10%),
+                  linear-gradient(180deg,var(--bg-900),var(--bg-800));
+      color:#eaf2f6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .container{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding:0 24px;
+    }
+
+    /* Navbar */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background: linear-gradient(180deg, rgba(4,8,12,0.15), rgba(4,8,12,0.04));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 20px rgba(2,8,20,0.3);
+    }
+    .nav{
+      height:80px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .logo img{height:76px; width:auto; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));}
+    .nav-links{display:flex; gap:22px; align-items:center; font-weight:600; color:var(--muted)}
+    .nav-links a{padding:8px 10px; border-radius:10px; transition:all .18s ease}
+    .nav-links a:hover{color:white; transform:translateY(-2px)}
+    .cta{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+    }
+    .btn{
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      border:0;
+      transition:transform .16s ease, box-shadow .16s ease;
+      box-shadow: var(--shadow);
+    }
+    .btn-primary{
+      background: linear-gradient(90deg,var(--gold), #f6c65d);
+      color:#061016;
+      box-shadow: 0 12px 30px rgba(242,177,52,0.15);
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      padding:10px 16px;
+    }
+
+    /* Hero */
+    .hero{
+      padding:48px 0 24px;
+      display:grid;
+      grid-template-columns: 1fr 460px;
+      gap:36px;
+      align-items:center;
+      min-height:75vh;
+    }
+
+    .hero-left h1{
+      font-family: "Playfair Display", serif;
+      font-size: clamp(36px, 6.2vw, 64px);
+      margin:0 0 8px 0;
+      letter-spacing:-0.02em;
+      color: #fff;
+    }
+    .hero-left p.lead{
+      color: #cbe7e6;
+      font-size:18px;
+      margin:0 0 20px 0;
+      max-width: 62ch;
+    }
+    .hero-cta{display:flex; gap:16px; margin-top:10px}
+    .accent-curve{
+      position:absolute;
+      right:6%;
+      top:12%;
+      width:420px;
+      height:420px;
+      pointer-events:none;
+      z-index:0;
+      opacity:0.95;
+      background: radial-gradient(circle at 20% 20%, rgba(7,224,198,0.18), transparent 12%),
+                  conic-gradient(from 220deg at 50% 50%, rgba(7,224,198,0.12), rgba(0,183,255,0.07));
+      border-radius:50%;
+      mask: radial-gradient(circle at 45% 35%, black 45%, transparent 46%);
+      transform:translateY(-6%);
+      box-shadow: 0 40px 140px rgba(0,183,255,0.06);
+      mix-blend-mode: screen;
+    }
+
+    /* Hero bus card */
+    .hero-right{
+      position:relative;
+      z-index:2;
+      align-self:center;
+      display:flex;
+      justify-content:center;
+    }
+    .bus-card{
+      width:420px;
+      border-radius:18px;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.03);
+      position:relative;
+      transition:transform .35s cubic-bezier(.2,.9,.3,1);
+    }
+    .bus-card:hover{transform:translateY(-8px)}
+    .bus-card img{width:100%; height:320px; object-fit:cover; display:block}
+    .bus-card .meta{
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .tag{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      background: linear-gradient(90deg,var(--teal-1),var(--teal-2));
+      color:#012027;
+      box-shadow: 0 8px 30px rgba(0,183,255,0.08);
+    }
+
+    /* Sections */
+    section{padding:64px 0}
+    h2.section-title{
+      font-family:"Playfair Display",serif;
+      font-size:28px;
+      margin:0 0 18px 0;
+      color:#fff;
+    }
+    .sub { color:var(--muted); margin-bottom:28px; max-width:72ch }
+
+    /* Services grid */
+    .services{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:20px;
+    }
+    .service-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 30px rgba(3,8,16,0.45);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .service-card:hover{transform:translateY(-6px)}
+    .service-card h3{margin:8px 0 6px 0}
+    .service-card p{color:var(--muted); margin:0}
+
+    /* Fleet gallery */
+    .fleet-grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:18px;
+    }
+    .fleet-grid .photo{
+      border-radius:12px;
+      overflow:hidden;
+      position:relative;
+      background:var(--card);
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.03);
+      transition:transform .18s ease;
+    }
+    .fleet-grid .photo:hover{transform:translateY(-8px)}
+    .fleet-grid img{height:170px; width:100%; object-fit:cover; display:block}
+    .fleet-grid .label{
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      background: rgba(2,8,16,0.6);
+      padding:8px 10px; border-radius:8px;
+      font-weight:700;
+      color:#fff;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Booking quick form */
+    .booking {
+      background: linear-gradient(90deg, rgba(7,224,198,0.04), rgba(0,183,255,0.03));
+      padding:18px;
+      border-radius:12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .booking input, .booking select{
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+      background:transparent;
+      color:#fff;
+      outline:none;
+      min-width:0;
+    }
+    .booking .go{min-width:120px}
+
+    /* Testimonials */
+    .testimonials{
+      display:flex;
+      gap:16px;
+      overflow:hidden;
+    }
+    .test-card{
+      background:var(--card);
+      padding:18px;
+      border-radius:12px;
+      min-width:260px;
+      box-shadow: 0 8px 30px rgba(2,8,20,0.5);
+    }
+    .test-card p{color:var(--muted)}
+
+    /* Contact */
+    .contact-grid{display:grid; grid-template-columns: 1fr 420px; gap:24px; align-items:start}
+    .contact-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:12px;}
+
+    /* Footer */
+    footer{padding:26px 0; border-top: 1px solid rgba(255,255,255,0.03); color:var(--muted)}
+    .footer-inner{display:flex; justify-content:space-between; gap:24px; align-items:center}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr; padding-top:28px; gap:22px}
+      .hero-right{order:-1}
+      .services{grid-template-columns:repeat(2,1fr)}
+      .fleet-grid{grid-template-columns:repeat(2,1fr)}
+      .contact-grid{grid-template-columns:1fr}
+      .nav-links{display:none}
+    }
+    @media (max-width: 520px){
+      .services{grid-template-columns:1fr}
+      .fleet-grid{grid-template-columns:1fr}
+      .bus-card{width:100%}
+      header .nav{height:68px;padding:8px 0}
+    }
+
+    /* Small niceties */
+    .muted{color:var(--muted)}
+    .pill{padding:6px 10px;border-radius:999px; background:rgba(255,255,255,0.02); font-weight:700;}
+    .center{text-align:center}
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        <!-- Replace with your actual logo file path -->
+        <a href="#"><img src="./images/SIRI LOGISTICS.jpg" alt="Siri Logistics Logo" id="logo-img"></a>
+        <div>
+          <div style="font-weight:800; letter-spacing:0.06em; font-size:14px;">SIRI</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:2px;">Logistics & Travel</div>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#services">Our Services</a>
+        <a href="#fleet">Fleet</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="cta">
+        <button class="btn btn-ghost" onclick="scrollToSection('fleet')">View Fleet</button>
+        <button class="btn btn-primary" onclick="openBooking()">Book Now</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <!-- HERO -->
+      <section class="hero" aria-labelledby="hero-heading">
+        <div style="position:relative" class="hero-left">
+          <div class="accent-curve" aria-hidden="true"></div>
+
+          <h1 id="hero-heading">Luxury On Wheels</h1>
+          <p class="lead">Safe, reliable, and comfortable travel. Experience premium bus tours and corporate travel with luxury coaches and professional service.</p>
+
+          <div class="hero-cta">
+            <button class="btn btn-primary" onclick="openBooking()">Book Now</button>
+            <button class="btn btn-ghost" onclick="scrollToSection('fleet')">View Fleet</button>
+          </div>
+
+          <div style="margin-top:22px;" aria-hidden="false">
+            <div class="booking" role="region" aria-label="Quick booking form">
+              <input type="text" id="quick-from" placeholder="Origin (city)" aria-label="Origin">
+              <input type="text" id="quick-to" placeholder="Destination (city)" aria-label="Destination">
+              <input type="date" id="quick-date" aria-label="Travel date">
+              <select id="quick-pass">
+                <option value="1">1 passenger</option>
+                <option value="2">2 passengers</option>
+                <option value="3">3 passengers</option>
+                <option value="4">4+ passengers</option>
+              </select>
+              <button class="btn btn-primary go" onclick="submitQuickBooking()">Go</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="bus-card" role="img" aria-label="Luxury coach">
+            <!-- Replace bus-1.jpg with your best hero bus image -->
+            <img src="./images/BUS!.jpg" alt="Luxury bus from Siri Logistics">
+            <div class="meta">
+              <div>
+                <div class="pill">Luxury Coach</div>
+                <div style="color:var(--muted); margin-top:6px; font-weight:700">Comfort seating • WiFi • AC</div>
+              </div>
+              <div class="tag">BOOK NOW</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="services" aria-labelledby="services-heading">
+        <h2 class="section-title" id="services-heading">Our Services</h2>
+        <p class="sub">From corporate transfers to wedding and event rentals — we offer flexible bus solutions tailored to your travel needs, all delivered with luxury and safety in mind.</p>
+
+        <div class="services" role="list">
+          <article class="service-card" role="listitem">
+            <h3>Luxury Tours</h3>
+            <p>Premium coaches for long-distance tours with reclining seats, entertainment, and refreshments.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <h3>Corporate Travel</h3>
+            <p>Scheduled transfers and pooled transport solutions for corporate events and employee commutes.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <h3>Group Trips</h3>
+            <p>Group bookings for school trips, clubs, and large family excursions with flexible pickup/drop plans.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <h3>City Transfers</h3>
+            <p>Fast and reliable city-to-city transfers with fixed route options and on-demand pickups.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <h3>Wedding & Event Rentals</h3>
+            <p>Dedicated coaches and staff for weddings, concerts, and special events — with branding options.</p>
+          </article>
+
+          <article class="service-card" role="listitem">
+            <h3>Shuttle Services</h3>
+            <p>Short route shuttles and hourly rentals for corporate campuses, hotels and venues.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- FLEET -->
+      <section id="fleet" aria-labelledby="fleet-heading">
+        <h2 class="section-title" id="fleet-heading">Our Fleet</h2>
+        <p class="sub">High-end coaches in multiple classes — from mini-coach to full-size luxury sleepers. Click images to view larger.</p>
+
+        <div class="fleet-grid" id="fleet-grid" role="list">
+          <!-- Replace these images with the bus photos you uploaded -->
+          <div class="photo" tabindex="0" onclick="openLightbox(0)"><img src="./images/BUS2.jpg" alt="Luxury Coach - Siri Logistics"><div class="label">Luxury Coach</div></div>
+          <div class="photo" tabindex="0" onclick="openLightbox(1)"><img src="images/bus-2.jpg" alt="Sleeper Bus - Siri Logistics"><div class="label">Sleeper Bus</div></div>
+          <div class="photo" tabindex="0" onclick="openLightbox(2)"><img src="images/bus-3.jpg" alt="Mini Coach - Siri Logistics"><div class="label">Mini Coach</div></div>
+          <div class="photo" tabindex="0" onclick="openLightbox(3)"><img src="images/bus-4.jpg" alt="Executive Coach - Siri Logistics"><div class="label">Executive Coach</div></div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section id="testimonials" aria-labelledby="testimonials-heading">
+        <h2 class="section-title" id="testimonials-heading">What customers say</h2>
+        <p class="sub">Trusted by travelers — real reviews from customers who experienced our luxury coaches and service.</p>
+
+        <div class="testimonials" id="testimonials-track">
+          <div class="test-card">
+            <strong>Ravi K.</strong>
+            <p class="muted">"Excellent service and comfortable coach. Driver arrived early and the reel of our event was delivered in 12 minutes — amazing!"</p>
+          </div>
+
+          <div class="test-card">
+            <strong>Maya S.</strong>
+            <p class="muted">"We booked a fleet for our wedding guests. The team was professional and punctual. The interiors were immaculate."</p>
+          </div>
+
+          <div class="test-card">
+            <strong>Team Venture</strong>
+            <p class="muted">"Perfect corporate transfer experience. Coaches were clean, staff were courteous — highly recommended."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT + CONTACT -->
+      <section id="about" aria-labelledby="about-heading">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:center;">
+          <div>
+            <h2 class="section-title" id="about-heading">About Siri Logistics</h2>
+            <p class="sub">We combine luxury fleet management with modern tech and fast-turnaround media services (instant reels) so your travel and events are covered — from transport to promotional content.</p>
+            <ul style="color:var(--muted); margin-top:8px;">
+              <li>Professional drivers & trained staff</li>
+              <li>Comprehensive safety checks</li>
+              <li>On-demand reels & event editing (10–15 mins)</li>
+            </ul>
+          </div>
+
+          <div>
+            <div style="background:linear-gradient(90deg, rgba(0,183,255,0.06), rgba(7,224,198,0.04)); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03)">
+              <strong>Ready to travel?</strong>
+              <p class="muted">Contact our sales team to request a quote, fleet details or a custom travel plan.</p>
+              <div style="display:flex; gap:10px; margin-top:10px;">
+                <a class="btn btn-primary" href="#contact">Contact Us</a>
+                <a class="btn btn-ghost" href="mailto:hello@sirilogistics.com">Email</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 class="section-title" id="contact-heading">Contact & Bookings</h2>
+        <p class="sub">Reach out for pricing, specific routes, or to request a dedicated contract for recurring transport.</p>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <form id="contact-form" onsubmit="submitContact(event)">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <input required name="name" placeholder="Your full name" />
+                <input required name="phone" placeholder="Phone number" />
+                <input required type="email" name="email" placeholder="Email" />
+                <input name="company" placeholder="Company (optional)" />
+              </div>
+              <textarea required name="message" rows="5" placeholder="How can we help? Tell us date, route or event details." style="margin-top:10px; width:100%; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:#fff"></textarea>
+              <div style="display:flex; gap:12px; margin-top:12px;">
+                <button class="btn btn-primary" type="submit">Send Request</button>
+                <a class="btn btn-ghost" href="tel:+911234567890">Call Us</a>
+                <a class="btn btn-ghost" href="https://wa.me/911234567890" target="_blank">WhatsApp</a>
+              </div>
+            </form>
+          </div>
+
+          <div>
+            <!-- Map placeholder: replace src with your Google Maps embed for actual location -->
+            <iframe title="Siri Logistics Map"
+                    src="https://maps.google.com/maps?q=delhi&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    style="width:100%; height:100%; min-height:320px; border:0; border-radius:12px;"></iframe>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong>Siri Logistics</strong>
+        <div style="font-size:13px; color:var(--muted)">Premium buses | Instant reels | Corporate & Event transport</div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="muted">© <span id="yr"></span> Siri Logistics</div>
+        <div style="width:1px; height:28px; background:rgba(255,255,255,0.02)"></div>
+        <div class="muted">Terms • Privacy</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox & Booking modal (simple) -->
+  <div id="lightbox" style="display:none; position:fixed; inset:0; z-index:90; align-items:center; justify-content:center; background:rgba(2,10,18,0.8);">
+    <div style="max-width:90vw; max-height:90vh; position:relative;">
+      <button onclick="closeLightbox()" aria-label="Close" style="position:absolute; right:-10px; top:-10px; z-index:99; border-radius:999px; border:0; background:var(--gold); padding:10px 12px; font-weight:800; color:#061016">✕</button>
+      <img id="lightbox-img" src="" alt="Fleet view" style="max-width:100%; max-height:90vh; border-radius:12px; box-shadow:var(--shadow)">
+    </div>
+  </div>
+
+  <div id="booking-modal" style="display:none; position:fixed; inset:0; z-index:99; align-items:center; justify-content:center; background:rgba(2,10,18,0.7);">
+    <div style="width:96%; max-width:720px; background:linear-gradient(180deg,#061018, #071428); padding:22px; border-radius:12px; border:1px solid rgba(255,255,255,0.04); box-shadow:var(--shadow)">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0; font-family:Playfair Display, serif;">Book a Coach</h3>
+        <button onclick="closeBooking()" aria-label="Close booking" class="btn btn-ghost">Close</button>
+      </div>
+      <form id="booking-form" onsubmit="submitBooking(event)" style="margin-top:12px; display:grid; gap:10px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <input name="from" placeholder="From (city)" required />
+          <input name="to" placeholder="To (city)" required />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <input type="date" name="date" required />
+          <select name="vehicle" required>
+            <option value="">Choose coach type</option>
+            <option>Luxury Coach</option>
+            <option>Sleeper Bus</option>
+            <option>Mini Coach</option>
+            <option>Executive Coach</option>
+          </select>
+        </div>
+        <textarea name="notes" placeholder="Notes / passenger count / pickup address" rows="3"></textarea>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-primary" type="submit">Request Quote</button>
+          <button type="button" class="btn btn-ghost" onclick="closeBooking()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Set year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Lightbox images array - ensure this matches images in the fleet
+    const fleetImages = [
+      'images/bus-1.jpg',
+      'images/bus-2.jpg',
+      'images/bus-3.jpg',
+      'images/bus-4.jpg'
+    ];
+
+    function openLightbox(i){
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = fleetImages[i] || fleetImages[0];
+      lb.style.display = 'flex';
+    }
+    function closeLightbox(){ document.getElementById('lightbox').style.display = 'none'; }
+
+    // Booking modal
+    function openBooking(){ document.getElementById('booking-modal').style.display = 'flex'; }
+    function closeBooking(){ document.getElementById('booking-modal').style.display = 'none'; }
+
+    // Smooth scroll helper
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(!el) return window.scrollTo({top:0, behavior:'smooth'});
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    // Quick booking (demo)
+    function submitQuickBooking(){
+      const from = document.getElementById('quick-from').value || '---';
+      const to = document.getElementById('quick-to').value || '---';
+      const date = document.getElementById('quick-date').value || '---';
+      alert(`Quick request sent:\nFrom: ${from}\nTo: ${to}\nDate: ${date}\nOur team will contact you soon.`);
+    }
+
+    // Contact/booking submit functions (demo placeholders)
+    function submitContact(e){
+      e.preventDefault();
+      // In real app: send via AJAX to backend or email service
+      alert('Thanks! Your contact request has been submitted. We will contact you shortly.');
+      e.target.reset();
+      scrollToSection('services');
+    }
+
+    function submitBooking(e){
+      e.preventDefault();
+      alert('Booking request received — our team will send a quote within 1 business day.');
+      closeBooking();
+      e.target.reset();
+    }
+
+    // Keyboard handlers
+    document.addEventListener('keydown', (ev) => {
+      if(ev.key === 'Escape'){
+        closeLightbox();
+        closeBooking();
+      }
+    });
+
+    // Basic fade-in for sections on scroll (optional small effect)
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, {threshold: 0.08});
+
+    document.querySelectorAll('section').forEach(s=>{
+      s.style.opacity = 0;
+      s.style.transform = 'translateY(18px)';
+      s.style.transition = 'all .7s cubic-bezier(.16,.9,.3,1)';
+      io.observe(s);
+    });
+  </script>
+</body>
+</html>
